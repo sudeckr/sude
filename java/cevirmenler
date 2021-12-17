@@ -1,0 +1,55 @@
+package edu.sau.vys.vys1;
+
+public class cevirmenler {
+    private int cevirmen_id;
+    private String cevirdigidil;
+    private String cevirmen_ad;
+    private String cevirmen_soyad;
+
+    public cevirmenler(String ad) {
+        this.cevirmen_ad = ad;
+    }
+
+    public cevirmenler(int cevirmen_id, String cevirmen_ad, String cevirmen_soyad, String cevirdigidil) {
+        this.cevirmen_id=cevirmen_id;
+        this.cevirmen_ad = cevirmen_ad;
+        this.cevirmen_soyad = cevirmen_soyad;
+        this.cevirdigidil = cevirdigidil;
+    }
+    public cevirmenler(String cevirmen_ad, String cevirdigidil, String cevirmen_soyad) {
+
+        this.cevirmen_ad = cevirmen_ad;
+        this.cevirdigidil = cevirdigidil;
+        this.cevirmen_soyad = cevirmen_soyad;
+    }
+    public int getCevirmen_id() {
+        return cevirmen_id;
+    }
+    public String getCevirmen_ad() {
+        return cevirmen_ad;
+    }
+    public void setCevirmen_ad(String ad) {
+        this.cevirmen_ad = ad;
+    }
+    public String getCevirdigidil() {
+        return cevirdigidil;
+    }
+    public void setCevirdigidil(String cevirdigidil) {
+        this.cevirdigidil = cevirdigidil;
+    }
+    public String getCevirmen_soyad() {
+        return cevirmen_soyad;
+    }
+    public void setCevirmen_soyad(String cevirmen_soyad) {
+        this.cevirmen_soyad = cevirmen_soyad;
+    }
+    @Override
+    public String toString() {
+        return "cevirmenler{" +
+                "cevirmen_id="+cevirmen_id+
+                ", cevirmen_ad='"+cevirmen_ad+ '\'' +
+                ", cevirdigidil="+cevirdigidil+
+                ", cevirmen_soyad="+cevirmen_soyad+
+                '}';
+    }
+    }
