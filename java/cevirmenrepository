@@ -1,0 +1,140 @@
+package edu.sau.vys.vys1;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+
+
+public class cevirmenrepository {
+
+    private Connection baglan () {
+
+        Connection conn=null;
+
+        try
+        {   /***** Bağlantı kurulumu *****/
+             conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/kitap_kirtasiyesitesi",
+                    "postgres", "sudeselim");
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return conn;
+
+    }
+    public cevirmenler ara(int cevirmenid1){
+        System.out.println("çevirmen aranıyor...");
+        cevirmenler cevirmen=null;
+        String sql= "SELECT *  FROM cevirmenler WHERE cevirmen_id="+cevirmenid1;
+
+        Connection conn=this.baglan();
+        try {
+            Statement stmt =conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            conn.close();
+            int cevirmen_id;
+            String cevirmen_ad;
+            String cevirmen_soyad;
+            String cevirdigidil;
+            while (rs.next()){
+                cevirmen_id=rs.getInt("cevirmen_id");
+                cevirmen_ad=rs.getString("cevirmen_ad");
+                cevirmen_soyad=rs.getString("cevirmen_soyad");
+                cevirdigidil=rs.getString("cevirdigidil");
+
+                 cevirmen =new cevirmenler(cevirmen_id,cevirmen_ad,cevirmen_soyad,cevirdigidil);
+
+
+             }
+             rs.close();
+             stmt.close();
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+
+        }
+
+        return cevirmen;
+    }
+
+
+    public List<cevirmenler> tumkitaplar(){
+        System.out.println("cevirmenler getiriliyor");
+        List<cevirmenler> cevirmenler1=new ArrayList<cevirmenler>();
+        String sql ="SELECT * FROM \"cevirmenler\"";
+        Connection conn =this.baglan();
+        try {
+            Statement stmt =conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            conn.close();
+            int cevirmen_id;
+            String cevirmen_ad;
+            String cevirmen_soyad;
+            String cevirdigidil;
+            while (rs.next()){
+                cevirmen_id=rs.getInt("cevirmen_id");
+                cevirmen_ad=rs.getString("cevirmen_ad");
+                cevirmen_soyad=rs.getString("cevirmen_soyad");
+                cevirdigidil=rs.getString("cevirdigidil");
+
+                cevirmenler1.add(new cevirmenler(cevirmen_id,cevirmen_ad,cevirmen_soyad,cevirdigidil));
+
+
+            }
+            rs.close();
+            stmt.close();
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+
+        }
+        return cevirmenler1;
+    }
+
+    public void kaydet(cevirmenler kitap1){
+
+        String sql= "INSERT INTO  cevirmenler (cevirmen_id,cevirmen_ad,cevirmen_soyad,cevirdigidil) VALUES("+kitap1.getCevirmen_id()+",\'"+kitap1.getCevirmen_ad()+"\',\'"+kitap1.getCevirmen_soyad()+"\',\'"+kitap1.getCevirdigidil()+"\')";
+        System.out.println(sql);
+        Connection conn=this.baglan();
+
+        try
+        {
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate(sql);
+            //***** Bağlantı sonlandırma *****
+            conn.close();
+            stmt.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+    public void sil(int cevirmennumarasi){
+        System.out.println("çevirmen siliniyor...");
+
+        String sql= "DELETE FROM \"cevirmenler\" WHERE \"cevirmen_id\"="+cevirmennumarasi;
+
+        Connection conn=this.baglan();
+        try{
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate(sql);
+            //***** Bağlantı sonlandırma *****
+            conn.close();
+            stmt.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+}
+
