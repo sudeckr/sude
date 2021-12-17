@@ -1,0 +1,96 @@
+package edu.sau.vys.vys1;
+
+import java.sql.*;
+import java.util.List;
+import java.util.Scanner;
+
+
+
+public class uygulama {
+
+    public static void main(String[] args) {
+        Scanner giris = new Scanner(System.in);
+        cevirmenler cevirmen;
+        int cevirmen_id;
+        String cevirmen_soyad;
+        String cevirmen_ad;
+        String cevirdigidil;
+        cevirmenrepository cevirmenrepository1 = new cevirmenrepository();
+
+        System.out.println("***Arama***");
+        System.out.println("aradığınız çevirmenin numarasını yazınız ");
+        cevirmen_id = giris.nextInt();
+        giris.nextLine();
+        cevirmen = cevirmenrepository1.ara(cevirmen_id);
+        if (cevirmen != null) {
+            System.out.println("aradığınız cevirmen:" + cevirmen);
+        } else {
+            System.out.println("aradığınız cevirmen bulunamadı");
+        }
+        System.out.println("**tüm cevirmenleri getir**");
+        List<cevirmenler> cevirmenlerinlistesi;
+        cevirmenlerinlistesi = cevirmenrepository1.tumkitaplar();
+        System.out.println(cevirmenlerinlistesi);
+        System.out.println("Eklemek istediğiniz cevirmenin adını giriniz:");
+        String cevirmenadi = giris.nextLine();
+        cevirmen = cevirmenlerinlistesi.stream()
+                .filter(cevirmenElementi -> cevirmenadi.equalsIgnoreCase(cevirmenElementi.getCevirmen_ad()))
+                .findAny()
+                .orElse(null);
+        if (cevirmen != null)
+            System.out.println("Eklemek istediğiniz çevirmen:" + cevirmen);
+        System.out.println("******************Kaydet********************");
+        System.out.println("cevirmen adını giriniz:");
+        cevirmen_ad = giris.next();
+        giris.nextLine();
+        System.out.println("cevirmen id giriniz:");
+        cevirmen_id = giris.nextInt();
+        System.out.println("cevirmen soyadını ve çevirdiği dili giriniz");
+        cevirdigidil = giris.next();
+        cevirmen_soyad = giris.next();
+        giris.nextLine();
+        cevirmen = new cevirmenler(cevirmen_id, cevirmen_ad, cevirdigidil, cevirmen_soyad);
+        cevirmenrepository1.kaydet(cevirmen);
+        System.out.println("******************Silme**************************");
+        cevirmenlerinlistesi = cevirmenrepository1.tumkitaplar();
+        System.out.println(cevirmenlerinlistesi);
+
+        System.out.println("Silmek istediğiniz cevirmenin numarasını giriniz:");
+        cevirmen_id = giris.nextInt();
+        giris.nextLine();
+        cevirmenrepository1.sil(cevirmen_id);
+        System.out.println("******************Değişiklik**************************");
+        try {
+            Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/kitap_kirtasiyesitesi",
+                    "postgres", "sudeselim");
+
+
+
+            cevirmenlerinlistesi = cevirmenrepository1.tumkitaplar();
+            System.out.println(cevirmenlerinlistesi);
+
+            System.out.print("Değiştirmek istediğiniz çevirmenin id sini giriniz: ");
+            cevirmen_id = giris.nextInt();
+            String sql = "SELECT \"cevirmen_id\", \"cevirmen_ad\", \"cevirmen_soyad\", \"cevirdigidil\"  FROM \"cevirmenler\" WHERE \"cevirmen_id\"=" + cevirmen_id;
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+
+            if (cevirmen_id == cevirmen_id) {
+                System.out.println("Çevirmenin yeni bilgilerini giriniz: ");
+                System.out.print("İsim: ");
+                cevirmen_ad = giris.next();
+                System.out.print("Soyisim: ");
+                cevirmen_soyad = giris.next();
+                System.out.print("Çevirdiği dil: ");
+                cevirdigidil = giris.next();
+
+                sql = "UPDATE \"cevirmenler\" SET \"cevirmen_ad\"=\'" + cevirmen_ad + "\', \"cevirmen_soyad\"=\'" + cevirmen_soyad + "\',\"cevirdigidil\"=\'" + cevirdigidil + "\', \"cevirmen_id\"=\'" + cevirmen_id + "\' WHERE \"cevirmen_id\"=" + cevirmen_id;
+                stmt.executeUpdate(sql);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+    }
