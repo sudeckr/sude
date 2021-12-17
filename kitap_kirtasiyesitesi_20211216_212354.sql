@@ -17,6 +17,28 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
+-- Name: kitap_kirtasiyesitesi; Type: DATABASE; Schema: -; Owner: postgres
+--
+
+CREATE DATABASE kitap_kirtasiyesitesi WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE = 'Turkish_Turkey.1254';
+
+
+ALTER DATABASE kitap_kirtasiyesitesi OWNER TO postgres;
+
+\connect kitap_kirtasiyesitesi
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
 -- Name: cevirmenara(integer); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
@@ -367,9 +389,9 @@ ALTER SEQUENCE public."UrunDegisikligiIzle_kayitNo_seq" OWNED BY public."UrunDeg
 
 CREATE TABLE public.cevirmenler (
     cevirmen_id integer NOT NULL,
-    cevirmen_ad character(50) NOT NULL,
-    cevirmen_soyad character(50) NOT NULL,
-    cevirdigidil character(50) NOT NULL
+    cevirmen_ad character(20) NOT NULL,
+    cevirmen_soyad character(20) NOT NULL,
+    cevirdigidil character(20) NOT NULL
 );
 
 
@@ -653,7 +675,8 @@ INSERT INTO public."UrunDegisikligiIzle3" VALUES
 --
 
 INSERT INTO public.cevirmenler VALUES
-	(1, 'sude                                              ', 'cakir                                             ', 'ingilizce                                         ');
+	(1, 'sude                ', 'cakir               ', 'ingilizce           '),
+	(2, 'ahmet               ', 'altan               ', 'türkçe              ');
 
 
 --
@@ -756,7 +779,9 @@ INSERT INTO public.kategoriler VALUES
 --
 
 INSERT INTO public.kitaplar VALUES
-	(1, 'hayvan çiftliği                                   ', 1, 1, 20, 'var                 ', '2                   ', 'ciltli                                  ', 'kitap kağıdı                            ', 1, 1, 1, 25);
+	(1, 'hayvan çiftliği                                   ', 1, 1, 20, 'var                 ', '2                   ', 'ciltli                                  ', 'kitap kağıdı                            ', 1, 1, 1, 25),
+	(2, 'sherlock                                          ', 1, 1, 1, 'var                 ', '2023                ', 'ciltli                                  ', 'kitap kağıdı                            ', 1, 1, 2, 15),
+	(3, 'paradokya                                         ', 1, 1, 120, 'yok                 ', '2010                ', 'ciltsiz                                 ', 'sarı kağıt                              ', 2, 1, 3, 29);
 
 
 --
